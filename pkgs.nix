@@ -1,6 +1,5 @@
 { pkgs }:
 with pkgs;
 [
-  jq
-  bat
+  trurl
 ]
