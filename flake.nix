@@ -16,10 +16,7 @@
           name = "nixenv-rebuild";
           runtimeInputs = with pkgs; [ nix ];
           text = ''
-            if [[ ! -v XDG_CONFIG_HOME ]]; then
-              XDG_CONFIG_HOME="$HOME/.config"
-            fi
-            NIXENV_CONFIG="$XDG_CONFIG_HOME/nixenv"
+            NIXENV_CONFIG="${XDG_CONFIG_HOME:-$HOME/.config}/nixenv"
             nix --extra-experimental-features "nix-command flakes" run "$NIXENV_CONFIG#nixenv-setup"
           '';  
         };
@@ -28,17 +25,9 @@
           name = "nixenv-setup";
           runtimeInputs = with pkgs; [ nix ];
           text = ''
-            if [[ ! -v XDG_STATE_HOME ]]; then
-              XDG_STATE_HOME="$HOME/.local/state"
-            fi
-
-            if [[ ! -v XDG_CONFIG_HOME ]]; then
-              XDG_CONFIG_HOME="$HOME/.config"
-            fi
-
-            if [[ ! -v XDG_DATA_HOME ]]; then
-              XDG_DATA_HOME="$HOME/.local/share"
-            fi
+            XDG_DATA_HOME="${XDG_DATA_HOME:-$HOME/.local/share}"
+            XDG_STATE_HOME="${XDG_STATE_HOME:-$HOME/.local/state}"
+            XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
 
             NIXENV_CONFIG="$XDG_CONFIG_HOME/nixenv"
             NIXENV_STATE="$XDG_STATE_HOME/nixenv"
